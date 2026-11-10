@@ -50,7 +50,6 @@ def validate_img(url):
     (.jpg, .jpeg, .png, .gif, .bmp)
     Returns a boolean
     """
-    #use urllib.parse.urlparse()
     clean_url = urllib.parse.urlparse(url).path
     if clean_url.lower().endswith((".jpg", ".bmp", ".jpeg", ".png", ".gif")):
         return True
