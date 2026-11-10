@@ -6,6 +6,9 @@ from urllib.parse import urljoin
 from html.parser import HTMLParser
 
 class ImageParser(HTMLParser):
+    """
+    Class to parse the HTML and filter for the tag and attribute of the images
+    """
     def __init__(self):
         super().__init__()
         self.images = []
@@ -30,9 +33,29 @@ def fetch_page(url):
         print(f"Could not fetch {url}: {e}")
         return None
 
-def extract_page(html):
-    images = ImageParser()
+def extract_images(html, base_url):
+    """
+    Create an instance, feed the html and convert the the urls to the absolute url and returns it
+    """
+    img = ImageParser()
+    img.feed(html)
+    absolute_url = []
+    for item in img.images:
+        absolute_url.append(urllib.parse.urljoin(base_url, item))
+    return absolute_url
 
+def validate_img(url):
+    """
+    Function to check if the extension is a valid image file extension for the program
+    (.jpg, .jpeg, .png, .gif, .bmp)
+    Returns a boolean
+    """
+    #use urllib.parse.urlparse()
+    clean_url = urllib.parse.urlparse(url).path
+    if clean_url.lower().endswith((".jpg", ".bmp", ".jpeg", ".png", ".gif")):
+        return True
+    else:
+        return False
 
 def main():
     parser = argparse.ArgumentParser()
