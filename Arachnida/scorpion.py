@@ -51,6 +51,11 @@ def read_exif(img_file):
                 tag_name = ExifTags.TAGS.get(key, f"Unknown tag {key}")
                 print(f"{tag_name}: {value}")
 
+            gps_info = img_exif.get_ifd(ExifTags.IFD.GPSInfo)
+            if gps_info:
+                for key, value in gps_info.items():
+                    print(f"GPS {key}: {value}")
+
 def main():
     parser = argparse.ArgumentParser()
     parser.add_argument("files", nargs="+")
