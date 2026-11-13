@@ -216,11 +216,32 @@ def crawl(url, output_path, current_depth, max_depth, visited_urls, downloaded_i
             crawl(link, output_path, current_depth + 1, max_depth, visited_urls, downloaded_images, domain)
 
 def main():
-    parser = argparse.ArgumentParser()
-    parser.add_argument("url")
-    parser.add_argument("-r", action="store_true")
-    parser.add_argument("-l", type=int, default=None)
-    parser.add_argument("-p", type=str, default='./data/')
+    """
+    Main function to parse command line arguments and initiate the crawling process.
+    """
+    parser = argparse.ArgumentParser(
+        description="Download images from a webpage, optionally crawling linked pages."
+    )
+    parser.add_argument("url", help="URL of the webpage to scrape")
+    parser.add_argument(
+        "-r",
+        action="store_true",
+        help="recursively crawl pages on the same domain",
+    )
+    parser.add_argument(
+        "-l",
+        type=int,
+        default=None,
+        metavar="DEPTH",
+        help="maximum crawl depth when used with -r (default: 5)",
+    )
+    parser.add_argument(
+        "-p",
+        type=str,
+        default='./data/',
+        metavar="PATH",
+        help="directory where images are saved (default: ./data/)",
+    )
 
     list_args = sys.argv[1:]
     if "-l" in list_args:
