@@ -1,3 +1,5 @@
+#!/usr/bin/env python3
+
 import argparse
 from pathlib import Path
 from PIL import Image, UnidentifiedImageError, ExifTags
@@ -39,7 +41,6 @@ def load_image(img_path):
     with Image.open(img_path) as img:
         print(f"Name: {img.filename}")
         print(f"Size: {os.path.getsize(img.filename)} bytes")
-        print(f"Modified: {datetime.fromtimestamp(os.path.getmtime(img.filename))}")
         print(f"Format: {img.format}")
         print(f"Dim: {img.size[0]}x{img.size[1]} px")
 
@@ -65,6 +66,16 @@ def read_exif(img_file):
             for key, value in img_exif.items():
                 tag_name = ExifTags.TAGS.get(key, f"Unknown tag {key}")
                 print(f"{tag_name}: {value}")
+            
+            date_original = img_exif.get(36867)
+            date_digitized = img_exif.get(36868)
+            date_modified = img_exif.get(306)
+            creation_date = date_original or date_digitized or date_modified
+
+            if creation_date:
+                print(f"Created: {creation_date}")
+            else:
+                print("Created: No date information available.")           
 
             gps_info = img_exif.get_ifd(ExifTags.IFD.GPSInfo)
             if gps_info:
