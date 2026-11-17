@@ -100,6 +100,10 @@ def main():
     args = parser.parse_args()
     
     for file in args.files:
+        print(f"\n{'=' * 50}")
+        print(f"File: {file}")
+        print(f"{'=' * 50}")
+
         if validate_path(file):
             if validate_extension(file):
                 try:
